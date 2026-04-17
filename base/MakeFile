@@ -1,0 +1,24 @@
+CXX=g++
+CXXFLAGS=-ILiving/headers
+DEPS= living.h
+OBJ= run.o Living/living.o
+
+%.o: %.cpp $(DEPS)
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
+run: $(OBJ)
+	$(CXX) -o $@ $^ $(CXXFLAGS)
+	./run.exe
+
+gui: Living/living.o win32_gui.o
+	$(CXX) -o $@ $^ $(CXXFLAGS) -lgdi32 -luser32 -lkernel32 -mwindows
+
+win32_gui.o: win32_gui.cpp
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
+try:
+	g++ -ILiving/headers run.cpp Living/living.cpp -o run
+	./run.exe
+	
+try2:
+	g++ -ILiving/headers win32_gui.cpp Living/living.cpp -o win32_gui
