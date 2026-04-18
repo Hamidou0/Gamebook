@@ -9,18 +9,25 @@
 #include <random> // Essential for modern randomness
 #include <ctime>
 #include <sstream>
+#include <techniques.hpp>
 
 class Living {
 private:
 
     std::string name = "blank_name";
     Skills skills;
+    double health = 100; // Default health, can be modified based on durability and other factors
+    double mana = 1;
     double strengthIndex; ///define the growth rate and chance to have a good start (strength wise)
     double intelligenceIndex;
     double reflexeIndex;
     double magicIndex; 
     //================
     double durabilityPercentage, recoveryPercentage, speedPercentage;
+
+    std::vector<Techniques> general_techniques;
+    std::vector<Techniques> attack_techniques;
+    std::vector<Techniques> defense_techniques;
 
     std::string magic_class_name[10] = {"None","Noneexistant","Useless","Weak","Magico","Mage",
                                     "High Mage", "Highlord", "Emperor"};
@@ -216,6 +223,65 @@ public:
     double getIntelligenceIndex() const { return intelligenceIndex; }
     double getReflexeIndex() const { return reflexeIndex; }
     double getMagicIndex() const { return magicIndex; }
+
+    // Health and Mana Getters/Setters
+    double getHealth() const { return health; }
+    void setHealth(double h) { health = h; }
+    double getMana() const { return mana; }
+    void setMana(double m) { mana = m; }
+
+    void takeDamage(double physicalDamage, double magicalDamage) {
+        double totalDamage = physicalDamage + magicalDamage;
+        health -= totalDamage;
+        if (health < 0) health = 0;
+    }
+
+    /**
+     * Checks if a technique exists in any of the three vectors based on its name.
+    */
+    bool hasTechnique(std::string skillName) {
+        for (auto &tech : general_techniques) {
+            if (tech.stats.skillName == skillName) return true;
+        }
+        for (auto &tech : attack_techniques) {
+            if (tech.stats.skillName == skillName) return true;
+        }
+        for (auto &tech : defense_techniques) {
+            if (tech.stats.skillName == skillName) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Adds a technique to the corresponding vector based on its type:
+     * 1 for general, 2 for attack, 3 for defense.
+    */
+    void addTechnique(int type, Techniques tech) {
+        if (hasTechnique(tech.stats.skillName)) {
+            std::cout << "Technique " << tech.stats.skillName << " already exists!" << std::endl;
+            return;
+        }
+        if (type == 1) general_techniques.push_back(tech);
+        else if (type == 2) attack_techniques.push_back(tech);
+        else if (type == 3) defense_techniques.push_back(tech);
+    }
+
+    /**
+     * Returns a random technique from the specified vector:
+     * 1 for general, 2 for attack, 3 for defense.
+    */
+    Techniques getRandomTechnique(int type) {
+        if (type == 1 && !general_techniques.empty()) {
+            return general_techniques[rand() % general_techniques.size()];
+        }
+        if (type == 2 && !attack_techniques.empty()) {
+            return attack_techniques[rand() % attack_techniques.size()];
+        }
+        if (type == 3 && !defense_techniques.empty()) {
+            return defense_techniques[rand() % defense_techniques.size()];
+        }
+        return Techniques(); // Returns an empty technique if none found
+    }
 
     /**
      * default constructor, uses random number

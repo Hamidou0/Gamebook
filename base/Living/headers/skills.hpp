@@ -16,7 +16,7 @@ struct SkillStats {
     double actionMultiplier = 1.0;
     double strength = 0;
     int level = 0;
-
+    int combat_IQ_level = 0;
 };
 
 class Skills {
