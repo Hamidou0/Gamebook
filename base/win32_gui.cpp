@@ -7,7 +7,7 @@
 #include <vector>
 #include <sstream>
 #include <living.hpp>
-
+#include <techniques_list.hpp>
 std::wstring stringToWstring(const std::string& str) {
     if (str.empty()) return std::wstring();
     
@@ -29,7 +29,7 @@ std::wstring to_wstring_with_precision(double val, int precision = 2) {
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-HWND field1;
+HWND field1; HWND field2; HWND field3;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nCmdShow) {
     // Register the window class.
@@ -76,18 +76,35 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    static Living character;
+    static Living character = Living();
+    static Living character2 = Living();
     static bool initialized = false;
 
     if (!initialized) {
         NameGenerator generator;
         character.setName(generator.getRandomName());
+        character2.setName(generator.getRandomName());
+        character.genAll();
+        character2.genAll();
+        character.addTechnique(2, fistPunch);
+       // character.addTechnique(2, legKick);
+        character.addTechnique(2, twoHandBlock);
+        character.addTechnique(2, oneHandBlock);
+
+        character2.addTechnique(2, fistPunch);
+        character2.addTechnique(2, legKick);
+       // character2.addTechnique(2, twoHandBlock);
+        character2.addTechnique(2, oneHandBlock);
         initialized = true;
     }
 
     switch (uMsg) {
     case WM_CREATE: {
         field1 = CreateWindow(L"STATIC", L"It works", WS_VISIBLE | WS_CHILD, 0, 0, 
+            0,0, hwnd, NULL, NULL, NULL);
+        field2 = CreateWindow(L"STATIC", L"It works", WS_VISIBLE | WS_CHILD, 0, 0, 
+            0,0, hwnd, NULL, NULL, NULL);
+        field3 = CreateWindow(L"STATIC", L"It works", WS_VISIBLE | WS_CHILD, 0, 0, 
             0,0, hwnd, NULL, NULL, NULL);
         
         SetTimer(hwnd, 1, 1000, NULL); // Update every second
@@ -96,18 +113,21 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
     case WM_SIZE: {
         int windowWidth = LOWORD(lParam);
-        int editWidth = 150;  // Define how wide you want the text field
-        int editHeight = 25;  // Define how tall you want it
+        int editWidth = 300;  // Define how wide you want the text field
+        int editHeight = 600;  // Define how tall you want it
         int padding = 10;     // Space from the right edge
 
         // MoveWindow(handle, x, y, width, height, redraw)
         // x = (Total Width) - (Edit Width) - (Padding)
-        MoveWindow(field1, windowWidth - editWidth - padding, 10, editWidth, editHeight, TRUE);
+        MoveWindow(field1, padding, 10, editWidth, editHeight, TRUE);
+        MoveWindow(field2, windowWidth - editWidth - padding, 10, editWidth, editHeight, TRUE);
+        MoveWindow(field3, (windowWidth - editWidth) / 2, 10, editWidth, editHeight, TRUE);
         break;
     }
 
     case WM_TIMER: {
         std::wstring cc = stringToWstring(character.return_stat());
+        std::wstring ccc = stringToWstring(character2.return_stat());
         std::wstring w = stringToWstring(character.getName()); 
         std::wstring ww = stringToWstring(character.getMagicClassName());
         std::wstring displayText = L"Name: " + w + L"\n" +
@@ -124,6 +144,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
                                    L"Magical Recovery: " + to_wstring_with_precision(character.getMagicalRecovery()) + L"\n";
 
         SetWindowText(field1, cc.c_str());
+        SetWindowText(field2, ccc.c_str());
         return 0;
     }
     case WM_PAINT:

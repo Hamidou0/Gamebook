@@ -3,19 +3,14 @@
 #include <string>
 #include <map>
 #include "skills.hpp"
-
 // 1. Enum for type safety and performance
-enum class SkillType {
-    Magic_Fire, Magic_Water, Magic_Earth, Magic_Wind, Magic_Thunder,
-    Magic_Blood, Magic_Light, Magic_Darkness, Magic_Space, Magic_Time,
-    Hands, Legs, Running, Swimming, Stealth, Speech
-};
 
 struct TechniqueStats {
     int isMagical = 0; // 0 for physical, 1 for magical
     SkillType skillType;
     std::string skillName;
     std::string techniqueType;
+    std::string description;
     double moveSpeed = 0;
     double damage_physical = 0;
     double damage_magic = 0;
@@ -40,7 +35,7 @@ public:
     TechniqueStats stats;
     Techniques() {};    
 
-    Techniques(int isMagical, SkillType skillType, std::string skillName, std::string techniqueType, double moveSpeed, double damage_physical, 
+    Techniques(int isMagical, SkillType skillType, std::string skillName, std::string techniqueType, std::string description, double moveSpeed, double damage_physical, 
         double damage_magic, double areaOfAffect, double defense_physical, double defense_magic, double accuracy, 
                double evasion, double hitChance, double criticalChance, double criticalDamage, 
                double learningMultiplier, double actionMultiplier, double strength) {
@@ -48,6 +43,7 @@ public:
         stats.skillType = skillType;
         stats.skillName = skillName;
         stats.techniqueType = techniqueType;
+        stats.description = description;
         stats.moveSpeed = moveSpeed;
         stats.damage_physical = damage_physical;
         stats.damage_magic = damage_magic;

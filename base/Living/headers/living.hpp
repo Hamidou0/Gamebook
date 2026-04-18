@@ -4,7 +4,6 @@
 #include <iostream>
 #include <time.h>
 #include <names.hpp>
-#include <skills.hpp>
 #include <vector>
 #include <random> // Essential for modern randomness
 #include <ctime>
@@ -299,7 +298,10 @@ public:
      * Randomly generate it all,
      * See generateLiving and generateMagic
     */
-    void genAll();
+    void genAll(){
+        generateLiving();
+        generateMagic();
+    }
 
     /**
      * This function prints the statistic of the living being

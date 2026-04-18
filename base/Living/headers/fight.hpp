@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "techniques.hpp"
 class Fight {
 
 public:
