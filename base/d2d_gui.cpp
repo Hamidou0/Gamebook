@@ -159,7 +159,14 @@ public:
         char2.setName(gen.getRandomName());
         char1.genAll(); char2.genAll();
         char1.addTechnique(2, fistPunch);
+       // character.addTechnique(2, legKick);
+        char1.addTechnique(3, twoHandBlock);
+        char1.addTechnique(3, oneHandBlock);
+
+        char2.addTechnique(2, fistPunch);
         char2.addTechnique(2, legKick);
+       // character2.addTechnique(2, twoHandBlock);
+        char2.addTechnique(3, oneHandBlock);
         
         fight.simulate(1,0);
     }
