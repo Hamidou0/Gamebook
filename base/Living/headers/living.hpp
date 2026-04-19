@@ -1,3 +1,6 @@
+#ifndef LIVING_HPP
+#define LIVING_HPP
+
 #include <stdlib.h> 
 #include <stdio.h>
 #include <string>
@@ -16,7 +19,9 @@ private:
     std::string name = "blank_name";
     Skills skills;
     double health = 100; // Default health, can be modified based on durability and other factors
+    double MaxHealth = 100;
     double mana = 1;
+    double MaxMana = 1;
     double strengthIndex; ///define the growth rate and chance to have a good start (strength wise)
     double intelligenceIndex;
     double reflexeIndex;
@@ -228,6 +233,10 @@ public:
     void setHealth(double h) { health = h; }
     double getMana() const { return mana; }
     void setMana(double m) { mana = m; }
+    double getMaxHealth() const { return MaxHealth; }
+    void setMaxHealth(double mh) { MaxHealth = mh; }
+    double getMaxMana() const { return MaxMana; }
+    void setMaxMana(double mm) { MaxMana = mm; }
 
     void takeDamage(double physicalDamage, double magicalDamage) {
         double totalDamage = physicalDamage + magicalDamage;
@@ -334,6 +343,47 @@ public:
         std::cout << "\n|==========";
 
     }
+    void print_char(){
+        std::cout << " " << name;
+        std::cout << "\n|== Physical Attribute ===|" ;
+        std::cout << "\nHealth : " << health;
+        std::cout << "\nMana : " << mana;
+        std::cout << "\nStrength : " << physical.strength;
+        std::cout << "\nDurability : " << physical.durability;
+        std::cout << "\nSpeed : " << physical.speed;
+        std::cout << "\nStamina : " << physical.stamina;
+        std::cout << "\nRecovery : " << physical.recovery;
+        std::cout << "\nReflexes : " << physical.reflexes;
+        std::cout << "\nThinking : " << physical.thinking;
+        std::cout << "\n|== Index Attribute ===|";
+        std::cout << "\nStrength Index : " << strengthIndex;
+        std::cout << "\nIntelligence Index : " << intelligenceIndex;
+        std::cout << "\nReflexes Index : " << reflexeIndex;
+        std::cout << "\n|==========";
+
+    }
+
+    std::string return_char(){
+        std::stringstream ss;
+        ss << " " << name;
+        ss << "\n|== Physical Attribute ===|" ;
+        ss << "\nHealth : " << health;
+        ss << "\nMana : " << mana;
+        ss << "\nStrength : " << physical.strength;
+        ss << "\nDurability : " << physical.durability;
+        ss << "\nSpeed : " << physical.speed;
+        ss << "\nStamina : " << physical.stamina;
+        ss << "\nRecovery : " << physical.recovery;
+        ss << "\nReflexes : " << physical.reflexes;
+        ss << "\nThinking : " << physical.thinking;
+        ss << "\n|== Index Attribute ===|";
+        ss << "\nStrength Index : " << strengthIndex;
+        ss << "\nIntelligence Index : " << intelligenceIndex;
+        ss << "\nReflexes Index : " << reflexeIndex;
+        ss << "\n|==========";
+        return ss.str();
+    }
+
 
     std::string return_stat(){
         std::stringstream ss;
@@ -365,3 +415,5 @@ public:
         return ss.str();
     }
 };
+
+#endif

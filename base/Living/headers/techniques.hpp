@@ -1,3 +1,6 @@
+#ifndef TECHNIQUES_HPP
+#define TECHNIQUES_HPP
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -88,3 +91,5 @@ public:
     }
 
 };
+
+#endif

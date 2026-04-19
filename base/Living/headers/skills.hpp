@@ -1,3 +1,6 @@
+#ifndef SKILLS_HPP
+#define SKILLS_HPP
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -51,3 +54,5 @@ public:
         return skillMap[skill];
     }
 };
+
+#endif

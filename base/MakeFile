@@ -13,12 +13,23 @@ run: $(OBJ)
 gui: Living/living.o win32_gui.o
 	$(CXX) -o $@ $^ $(CXXFLAGS) -lgdi32 -luser32 -lkernel32 -mwindows
 
+d2d_gui: Living/living.o d2d_gui.o
+	$(CXX) -o $@ $^ $(CXXFLAGS) -lgdi32 -luser32 -lkernel32 -ld2d1 -ldwrite -lole32 -mwindows
+
+d2d_gui.o: d2d_gui.cpp
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
 win32_gui.o: win32_gui.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 try:
-	g++ -ILiving/headers run.cpp Living/living.cpp -o run
+	g++ -ILiving/headers run.cpp Living/living.cpp Living/fight.cpp -o run
 	./run.exe
 	
 try2:
-	g++ -ILiving/headers win32_gui.cpp Living/living.cpp -o win32_gui
+	g++ -ILiving/headers win32_gui.cpp Living/living.cpp Living/fight.cpp -o win32_gui
+	./win32_gui.exe
+
+try3:
+	g++ -ILiving/headers d2d_gui.cpp Living/living.cpp Living/fight.cpp -o d2d_gui -lgdi32 -luser32 -lkernel32 -ld2d1 -ldwrite -lole32 -mwindows
+	./d2d_gui.exe

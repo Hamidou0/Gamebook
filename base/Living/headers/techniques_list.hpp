@@ -1,6 +1,8 @@
-#pragma once
+#ifndef TECHNIQUES_LIST_HPP
+#define TECHNIQUES_LIST_HPP
+#include "techniques.hpp"
 
-extern Techniques fistPunch(
+Techniques fistPunch(
     0,                          // isMagical (0 for physical)
     SkillType::Hands,           // skillType
     "Fist Punch",               // skillName
@@ -22,7 +24,7 @@ extern Techniques fistPunch(
     10.0                        // strength
 );
 
-extern Techniques legKick(
+Techniques legKick(
     0,                          // isMagical
     SkillType::Legs,            // skillType
     "Leg Kick",                 // skillName
@@ -44,7 +46,7 @@ extern Techniques legKick(
     15.0                        // strength
 );
 
-extern Techniques twoHandBlock(
+Techniques twoHandBlock(
     0,                          // isMagical
     SkillType::Hands,           // skillType
     "Two Hand Block",           // skillName
@@ -54,8 +56,8 @@ extern Techniques twoHandBlock(
     0.0,                        // damage_physical
     0.0,                        // damage_magic
     1.0,                        // areaOfAffect
-    50.0,                       // defense_physical (High protection)
-    10.0,                       // defense_magic
+    10.0,                       // defense_physical (High protection)
+    0.0,                       // defense_magic
     100.0,                      // accuracy (Always succeeds in bracing)
     0.0,                        // evasion (You are standing your ground)
     100.0,                      // hitChance
@@ -66,7 +68,7 @@ extern Techniques twoHandBlock(
     20.0                        // strength (Requires effort to hold)
 );
 
-extern Techniques oneHandBlock(
+Techniques oneHandBlock(
     0,                          // isMagical
     SkillType::Hands,           // skillType
     "One Hand Block",           // skillName
@@ -76,8 +78,8 @@ extern Techniques oneHandBlock(
     2.0,                        // damage_physical (Small 'bump' damage)
     0.0,                        // damage_magic
     1.0,                        // areaOfAffect
-    20.0,                       // defense_physical
-    5.0,                        // defense_magic
+    7.0,                        // defense_physical
+    0.0,                        // defense_magic
     90.0,                       // accuracy
     25.0,                       // evasion (Easier to dodge while one-handing)
     90.0,                       // hitChance
@@ -87,3 +89,5 @@ extern Techniques oneHandBlock(
     1.2,                        // actionMultiplier
     8.0                         // strength
 );
+
+#endif

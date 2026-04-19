@@ -8,6 +8,9 @@
 #include <sstream>
 #include <living.hpp>
 #include <techniques_list.hpp>
+#include <fight.hpp>
+#include <memory>
+
 std::wstring stringToWstring(const std::string& str) {
     if (str.empty()) return std::wstring();
     
@@ -74,11 +77,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, 
 
     return 0;
 }
+    Living character = Living();
+    Living character2 = Living();
+//std::unique_ptr<Fight> fight_p;
+    Fight fight = Fight(&character, &character2);
+
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    static Living character = Living();
-    static Living character2 = Living();
+    //Living character = Living();
+    //Living character2 = Living();
+    //std::unique_ptr<Fight> fight_p;
+    // Fight fight = Fight(character, character2);
     static bool initialized = false;
+    int counter = 0;
 
     if (!initialized) {
         NameGenerator generator;
@@ -88,13 +99,19 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         character2.genAll();
         character.addTechnique(2, fistPunch);
        // character.addTechnique(2, legKick);
-        character.addTechnique(2, twoHandBlock);
-        character.addTechnique(2, oneHandBlock);
+        character.addTechnique(3, twoHandBlock);
+        character.addTechnique(3, oneHandBlock);
 
         character2.addTechnique(2, fistPunch);
         character2.addTechnique(2, legKick);
        // character2.addTechnique(2, twoHandBlock);
-        character2.addTechnique(2, oneHandBlock);
+        character2.addTechnique(3, oneHandBlock);
+
+        
+        //fight_p = std::make_unique<Fight>(character, character2);
+        fight = *(std::make_unique<Fight>(&character, &character2));
+
+        //fight.simulate(1,0);
         initialized = true;
     }
 
@@ -107,7 +124,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         field3 = CreateWindow(L"STATIC", L"It works", WS_VISIBLE | WS_CHILD, 0, 0, 
             0,0, hwnd, NULL, NULL, NULL);
         
-        SetTimer(hwnd, 1, 1000, NULL); // Update every second
+        SetTimer(hwnd, 1, 20000, NULL); // Update every second
         return 0;
     }
 
@@ -126,25 +143,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
     }
 
     case WM_TIMER: {
-        std::wstring cc = stringToWstring(character.return_stat());
-        std::wstring ccc = stringToWstring(character2.return_stat());
-        std::wstring w = stringToWstring(character.getName()); 
-        std::wstring ww = stringToWstring(character.getMagicClassName());
-        std::wstring displayText = L"Name: " + w + L"\n" +
-                                   L"Strength: " + to_wstring_with_precision(character.getStrength()) + L"\n" +
-                                   L"Durability: " + to_wstring_with_precision(character.getDurability()) + L"\n" +
-                                   L"Speed: " + to_wstring_with_precision(character.getSpeed()) + L"\n" +
-                                   L"Stamina: " + to_wstring_with_precision(character.getStamina()) + L"\n" +
-                                   L"Recovery: " + to_wstring_with_precision(character.getRecovery()) + L"\n" +
-                                   L"Reflexes: " + to_wstring_with_precision(character.getReflexes()) + L"\n" +
-                                   L"Thinking: " + to_wstring_with_precision(character.getThinking()) + L"\n" +
-                                   L"Magic Class: " + ww + L"\n" +
-                                   L"Magical Strength: " + to_wstring_with_precision(character.getMagicalStrength()) + L"\n" +
-                                   L"Magical Casting Speed: " + to_wstring_with_precision(character.getMagicalCastingSpeed()) + L"\n" +
-                                   L"Magical Recovery: " + to_wstring_with_precision(character.getMagicalRecovery()) + L"\n";
+                fight.nextTurn();
+        std::wstring cc = stringToWstring(character.return_char());
+        std::wstring ccc = stringToWstring(character2.return_char());
+        std::wstring cccc = stringToWstring(fight.getLog_clear());
 
         SetWindowText(field1, cc.c_str());
         SetWindowText(field2, ccc.c_str());
+        SetWindowText(field3, cccc.c_str());
+
+
         return 0;
     }
     case WM_PAINT:
